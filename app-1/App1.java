@@ -77,6 +77,28 @@ public class App1 {
                     if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) continue;
                     screen = DASHBOARD;
                     break;
+                case PRINT_DETAILS:
+                    
+                    if (students.length == 0){
+                        System.out.printf("%sNo students records found, please add a new student!%s \n",
+                                    COLOR_RED_BOLD, RESET);                        
+                    }else {
+                         final String LINE = "+" + "-".repeat(6) + "+" + "-".repeat(15) + "+";
+                         System.out.println(LINE);
+                         // Header
+                         System.out.printf("|%-6s|%-15s|\n", "ID", "NAME");
+                         System.out.println(LINE);
+                         // Body
+                         for (int i = 0; i < students.length; i++) {
+                            String id = String.format("S%03d", (i+1));
+                            System.out.printf("|%-6s|%-15s|\n", id, students[i]);  
+                         }
+                         System.out.println(LINE);
+                    }
+
+                    System.out.print("Do you want to go back? (Y/n) ");
+                    if (SCANNER.nextLine().strip().toUpperCase().equals("Y")) screen = DASHBOARD;
+                    break;
                 default:
                     System.exit(0);
             }
