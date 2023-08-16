@@ -12,8 +12,8 @@ public class App4 {
         final String RESET = "\033[0m";
 
         final String DASHBOARD = "👷 Welcome to DEP-11 Phase-1 Assignment Marks Collector";
-        final String ADD_ASSIGNMENT_MARKS = "➕ Add Assignment Marks";
-        final String PRINT_DETAILS = "🖨 Print Assignment Marks";
+        final String ADD_ASSIGNMENT_MARKS = "➕  Add Assignment Marks";
+        final String PRINT_DETAILS = "🖨  Print Assignment Marks";
 
         final String ERROR_MSG = String.format("\t%s%s%s\n", COLOR_RED_BOLD, "%s", RESET);
         final String SUCCESS_MSG = String.format("\t%s%s%s\n", COLOR_GREEN_BOLD, "%s", RESET);
@@ -21,10 +21,10 @@ public class App4 {
         String screen = DASHBOARD;
         String[][] students = new String[][] {
                 { "DEP-01", "Kasun", "75" },
-                { "DEP-02", "Nuwan", "88.25" },
+                { "DEP-02", "Nuwan", "32.25" },
                 { "DEP-03", "Ruwan", "65" },
-                { "DEP-04", "Upul", "92.75" },
-                { "DEP-05", "Supun", "35" },
+                { "DEP-04", "Upul", "100" },
+                { "DEP-05", "Supun", "58" },
                 { "DEP-06", "Tharindu", "88.21" }
         };
 
@@ -163,6 +163,8 @@ public class App4 {
                     /* Let's swap arrays' memory locations */
                     students = tempStudents;
 
+                    System.out.println();
+                    System.out.printf(SUCCESS_MSG, String.format("%s:%s added successfully \n", id, name));
                     System.out.print("\tDo you want to continue adding marks? (Y/n)");
                     if (!SCANNER.nextLine().toUpperCase().strip().equals("Y"))
                         screen = DASHBOARD;
@@ -203,28 +205,29 @@ public class App4 {
                             color = "\033[44m";
                         } else if (marks >= 65) {
                             grade = "B";
-                            color = "\033[43m";
+                            color = "\033[42m";
                         } else if (marks >= 55) {
                             grade = "C";
-                            color = "\033[42m";
+                            color = "\033[43m";
                         } else {
                             grade = "F";
                             color = "\033[41m";
                         }
 
                         int spaceCount = (int) (marks / 100 * 8);
-                        String progress = String.format(" [%-8s]",
-                                String.format("%s=%s", "", "").repeat(spaceCount));
+                        String progress = String.format(" [%-17s]",
+                                String.format("%s%s%s", color, " ".repeat(spaceCount), RESET));
 
-                        grade += String.format(" %.2f", marks).concat("%").concat(progress);
+                        grade += String.format(" %6.2f", marks).concat("%").concat(progress);
 
-                        System.out.printf("\t|%-7s|%-15s|%-20s| \n",
+                        System.out.printf("\t|%-7s|%-15s|%-29s| \n",
                                 students[i][0],
                                 students[i][1],
                                 grade);
                     }
                     System.out.println(LINE);
-                    SCANNER.nextLine();
+                    System.out.print("\n\tDo you want to go back? (Y/n) ");
+                    if (SCANNER.nextLine().toUpperCase().strip().equals("Y")) screen = DASHBOARD;
                     break;
                 }
             }
