@@ -49,18 +49,104 @@ public class App4 {
                     boolean valid;
     
                     /* Let's Validate ID */
+                    idValidation:
                     do {
                         valid = true;
                         System.out.print("\tEnter Student ID: ");
-                        id = SCANNER.nextLine();
+                        id = SCANNER.nextLine().strip();
 
+                        /* Empty */ 
+                        if (id.isEmpty()){
+                            valid = false;
+                            System.out.printf(ERROR_MSG, "ID Can't be empty");
+                            continue;
+                        }
 
-                    }while(true);
+                        /* Format */ 
+                        if (!id.startsWith("DEP-") || id.length() != 6){
+                            valid = false;
+                            System.out.printf(ERROR_MSG, "Invalid ID format");
+                            continue;
+                        }else{
+                            // DEP-01 => 01
+                            String numberPart = id.substring(5);
+                            for (int i = 0; i < numberPart.length(); i++) {
+                                if (!Character.isDigit(numberPart.charAt(i))){
+                                    valid = false;
+                                    System.out.printf(ERROR_MSG, "Invalid ID format");
+                                    continue idValidation;
+                                }
+                            }
+                        }
+                        
+                        /* Already Exists */
+                        for (int row = 0; row < students.length; row++) {
+                            if (students[row][0].equals(id)){
+                                valid = false;
+                                System.out.printf(ERROR_MSG, "Student ID already exists");
+                                continue idValidation;
+                            }
+                        }
+                    }while(!valid);
 
                     /* Let's Validate Name */
+                    nameValidation:
+                    do {
+                        valid = true;
+                        System.out.print("\tEnter Student Name: ");
+                        name = SCANNER.nextLine().strip();
+
+                        /* Empty */ 
+                        if (name.isEmpty()){
+                            valid = false;
+                            System.out.printf(ERROR_MSG, "Name can't be empty");
+                            continue;
+                        }
+
+                        /* Format */
+                        for (int i = 0; i < name.length(); i++) {
+                            if (!(Character.isLetter(name.charAt(i)) || 
+                            Character.isSpaceChar(name.charAt(i)))){
+                                valid = false;
+                                System.out.printf(ERROR_MSG, "Invalid Name");
+                                continue nameValidation;
+                            }
+                        }
+                    }while(!valid);                    
 
                     /* Let's Validate Marks */
+                    do {
+                        valid = true;
+                        System.out.print("\tEnter Student Marks: ");
+                        marks = SCANNER.nextDouble(); SCANNER.nextLine();
+
+                        /* Range */
+                        if (marks < 0 || marks > 100){
+                            valid = false;
+                            System.out.printf(ERROR_MSG, "Invalid Marks");
+                        }
+                    }while(!valid); 
                     
+                    /* Now we have to store this new assignment marks, 
+                     * So let's scale the `student` array by one
+                     */
+                    String[][] tempStudents = new String[students.length + 1][3];
+
+                     /* Let's copy previous recrods from old `student` array to new `student` array */
+                    for (int i = 0; i < students.length; i++) {
+                        tempStudents[i] = students[i];
+                    }
+
+                     /* Let's add new assignment marks */
+                     tempStudents[tempStudents.length - 1][0] = id;
+                     tempStudents[tempStudents.length - 1][1] = name;
+                     tempStudents[tempStudents.length - 1][2] = marks + "";
+
+                     /* Let's swap arrays' memory locations */
+                     students = tempStudents;
+
+                     System.out.print("\tDo you want to continue adding marks? (Y/n)");
+                     if (!SCANNER.nextLine().toUpperCase().strip().equals("Y")) screen = DASHBOARD;
                     break;
                 }case PRINT_DETAILS:{
                     break;
